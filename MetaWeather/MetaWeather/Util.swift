@@ -1,5 +1,5 @@
 //
-//  WeatherModel.swift
+//  Util.swift
 //  MetaWeather
 //
 //  Created by Tanaka Mazivanhanga on 7/31/19.
@@ -7,3 +7,8 @@
 //
 
 import Foundation
+extension Array {
+    func isValidIndex(_ index: Int) -> Bool {
+        return index >= 0 && index < self.count
+    }
+}

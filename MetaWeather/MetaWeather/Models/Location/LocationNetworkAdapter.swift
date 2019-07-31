@@ -47,7 +47,7 @@ class LocationNetworkAdapter {
             
             
             if let data = data {
-                print(String(data: data, encoding: .utf8))
+                //print(String(data: data, encoding: .utf8))
                 let jsonDecoder = JSONDecoder()
                 
                 do {
@@ -96,7 +96,7 @@ class LocationNetworkAdapter {
             
             
             if let data = data {
-                print(String(data: data, encoding: .utf8))
+                //print(String(data: data, encoding: .utf8))
                 let jsonDecoder = JSONDecoder()
                 
                 do {
