@@ -17,6 +17,8 @@ class LocationManager {
     var delegate: LocationManagerDelegate?
     private var locationNetworkAdapter: LocationNetworkAdapter!
     var query: String?
+    var latt: String?
+    var long: String?
     
     init() {
         locationNetworkAdapter = LocationNetworkAdapter()
@@ -27,6 +29,11 @@ class LocationManager {
         locationNetworkAdapter.fetchWeatherWithQuery(query: query)
     }
     }
+    func fetchDataWithLattLong() {
+        if let latt = latt, let long = long{
+            locationNetworkAdapter.fetchWeatherWithLattLong(latt: latt, long: long)
+        }
+    }
     
 
 }
@@ -36,6 +43,10 @@ extension LocationManager: LocationNetworkAdapterDelegate{
         self.location = locationNetworkAdapter.location!
         if let query = locationNetworkAdapter.query{
             self.query = query
+        }
+        if let latt = locationNetworkAdapter.latt, let long = locationNetworkAdapter.long{
+            self.latt = latt
+            self.long = long
         }
         delegate?.locationUpdated()
     }

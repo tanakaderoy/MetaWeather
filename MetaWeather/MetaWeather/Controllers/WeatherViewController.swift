@@ -14,16 +14,22 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var currentCityLabel: UILabel!
     @IBOutlet weak var currentTemperatureLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    var gotLocation = false
     let locationManager = LocationManager()
     
     let gpsLocationManager = CLLocationManager()
+    
+    var latitude = ""
+    var longitude = ""
+    var woeid = ""
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         locationManager.delegate = self
         locationManager.query = "Columbus"
-        locationManager.reloadData()
+        
         
         
         
@@ -31,18 +37,33 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         gpsLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         gpsLocationManager.requestWhenInUseAuthorization()
         gpsLocationManager.startUpdatingLocation()
+        
+        
         // Do any additional setup after loading the view.
+    }
+    func initilizeWeather(){
+        if gotLocation {
+            locationManager.latt = latitude
+            locationManager.long = longitude
+            locationManager.fetchDataWithLattLong()
+            
+        }else{
+            locationManager.reloadData()
+        }
+        
     }
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
         if location.horizontalAccuracy > 0{
+            gotLocation = true
             gpsLocationManager.stopUpdatingLocation()
             gpsLocationManager.delegate = nil
             print("longitude \(location.coordinate.longitude) latitude \(location.coordinate.latitude)")
-            let latitude = location.coordinate.latitude
-            let longitude = location.coordinate.longitude
+            latitude = "\(location.coordinate.latitude)"
+            longitude = "\(location.coordinate.longitude)"
+            initilizeWeather()
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
