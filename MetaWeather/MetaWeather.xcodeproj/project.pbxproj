@@ -15,6 +15,10 @@
 		BA38342C22F20D9000E98BE8 /* WeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38342B22F20D9000E98BE8 /* WeatherTableViewCell.swift */; };
 		BA38343222F2124200E98BE8 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38343122F2124200E98BE8 /* WeatherViewController.swift */; };
 		BA38343422F216C200E98BE8 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38343322F216C200E98BE8 /* Networking.swift */; };
+		BA38343622F21B8700E98BE8 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38343522F21B8700E98BE8 /* WeatherModel.swift */; };
+		BA38343822F21C2F00E98BE8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38343722F21C2F00E98BE8 /* Location.swift */; };
+		BA38343A22F21CF800E98BE8 /* LocationNetworkAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38343922F21CF800E98BE8 /* LocationNetworkAdapter.swift */; };
+		BA38343C22F220CC00E98BE8 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38343B22F220CC00E98BE8 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +33,10 @@
 		BA38342B22F20D9000E98BE8 /* WeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTableViewCell.swift; sourceTree = "<group>"; };
 		BA38343122F2124200E98BE8 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		BA38343322F216C200E98BE8 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		BA38343522F21B8700E98BE8 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		BA38343722F21C2F00E98BE8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		BA38343922F21CF800E98BE8 /* LocationNetworkAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNetworkAdapter.swift; sourceTree = "<group>"; };
+		BA38343B22F220CC00E98BE8 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		CD4E3A4DB473737504E9BAFC /* Pods-MetaWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaWeather.release.xcconfig"; path = "Pods/Target Support Files/Pods-MetaWeather/Pods-MetaWeather.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +106,10 @@
 			isa = PBXGroup;
 			children = (
 				BA38343322F216C200E98BE8 /* Networking.swift */,
+				BA38343522F21B8700E98BE8 /* WeatherModel.swift */,
+				BA38343722F21C2F00E98BE8 /* Location.swift */,
+				BA38343922F21CF800E98BE8 /* LocationNetworkAdapter.swift */,
+				BA38343B22F220CC00E98BE8 /* LocationManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -236,8 +248,12 @@
 			files = (
 				BA38343222F2124200E98BE8 /* WeatherViewController.swift in Sources */,
 				BA38342C22F20D9000E98BE8 /* WeatherTableViewCell.swift in Sources */,
+				BA38343A22F21CF800E98BE8 /* LocationNetworkAdapter.swift in Sources */,
 				BA38341622F2085A00E98BE8 /* AppDelegate.swift in Sources */,
+				BA38343C22F220CC00E98BE8 /* LocationManager.swift in Sources */,
 				BA38343422F216C200E98BE8 /* Networking.swift in Sources */,
+				BA38343822F21C2F00E98BE8 /* Location.swift in Sources */,
+				BA38343622F21B8700E98BE8 /* WeatherModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

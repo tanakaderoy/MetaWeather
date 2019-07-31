@@ -166,6 +166,7 @@
                     <connections>
                         <outlet property="currentCityLabel" destination="SXw-hS-Mk9" id="WPb-6H-jIH"/>
                         <outlet property="currentTemperatureLabel" destination="UIn-H4-1Ja" id="CEe-wm-vC2"/>
+                        <outlet property="tableView" destination="uHR-1g-LxO" id="WWY-UT-cEO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

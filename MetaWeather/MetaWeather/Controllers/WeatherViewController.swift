@@ -13,15 +13,24 @@ import CoreLocation
 class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var currentCityLabel: UILabel!
     @IBOutlet weak var currentTemperatureLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+    let locationManager = LocationManager()
     
-    let locationManager = CLLocationManager()
+    let gpsLocationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        locationManager.query = "Columbus"
+        locationManager.reloadData()
+        
+        
+        
+        gpsLocationManager.delegate = self
+        gpsLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        gpsLocationManager.requestWhenInUseAuthorization()
+        gpsLocationManager.startUpdatingLocation()
         // Do any additional setup after loading the view.
     }
     
@@ -29,8 +38,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
         if location.horizontalAccuracy > 0{
-            locationManager.stopUpdatingLocation()
-            locationManager.delegate = nil
+            gpsLocationManager.stopUpdatingLocation()
+            gpsLocationManager.delegate = nil
             print("longitude \(location.coordinate.longitude) latitude \(location.coordinate.latitude)")
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
@@ -52,6 +61,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     */
 
+}
+extension WeatherViewController: LocationManagerDelegate {
+    func locationUpdated() {
+        
+        currentCityLabel.text = locationManager.location[0].title
+    }
+    
+    
 }
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
