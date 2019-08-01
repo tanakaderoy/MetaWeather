@@ -10,6 +10,7 @@ import Foundation
 
 protocol LocationManagerDelegate {
     func locationUpdated()
+    func locationUpdateFailed()
 }
 
 class LocationManager {
@@ -49,6 +50,9 @@ extension LocationManager: LocationNetworkAdapterDelegate{
             self.long = long
         }
         delegate?.locationUpdated()
+    }
+    func locationEmpty() {
+        self.delegate?.locationUpdateFailed()
     }
     
     

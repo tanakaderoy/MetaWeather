@@ -9,6 +9,7 @@
 import Foundation
 protocol LocationNetworkAdapterDelegate  {
     func locationUpdated()
+    func locationEmpty()
 }
 class LocationNetworkAdapter {
     var location: [Location]?
@@ -47,7 +48,7 @@ class LocationNetworkAdapter {
             
             
             if let data = data {
-                //print(String(data: data, encoding: .utf8))
+                //print(String(data: data, encoding: .utf8)!)
                 let jsonDecoder = JSONDecoder()
                 
                 do {
@@ -85,18 +86,24 @@ class LocationNetworkAdapter {
             
             if error != nil || data == nil {
                 print("Error handle later")
+                self.delegate?.locationEmpty()
                 return
             }
             
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                 print("error in the response")
+                self.delegate?.locationEmpty()
                 return
             }
             
             
             if let data = data {
-                //print(String(data: data, encoding: .utf8))
+                print(String(data: data, encoding: .utf8)!)
+                //so this api returns [] for cities it doesnt have data for when you query by the name
+                if (String(data: data, encoding: .utf8)! == "[]") {
+                    self.delegate?.locationEmpty()
+                }
                 let jsonDecoder = JSONDecoder()
                 
                 do {
@@ -108,6 +115,7 @@ class LocationNetworkAdapter {
                 }
                 catch let error {
                     print("error parsing json: \(error.localizedDescription)")
+                    self.delegate?.locationEmpty()
                     
                 }
             }

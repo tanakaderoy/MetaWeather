@@ -16,7 +16,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var currentCityLabel: UILabel!
     @IBOutlet weak var currentTemperatureLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toggleFahrenheitOrCelsius: UISegmentedControl!
+    
     var gotLocation = false
+    var isFahrenheit = true
     let locationManager = LocationManager()
     let weatherManager = WeatherManager()
     
@@ -77,6 +80,17 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    @IBAction func toggleTempTouched(_ sender: UISegmentedControl) {
+        let selectedSegment = sender.selectedSegmentIndex
+        if selectedSegment == 0 {
+            isFahrenheit = true
+        }else{
+            isFahrenheit = false
+        }
+        weatherUpdated()
+    }
+    
+    
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
@@ -119,7 +133,7 @@ extension WeatherViewController: LocationManagerDelegate {
         alert.addAction(UIAlertAction.init(title: "Ok", style: .cancel, handler: { (action) in
             self.performSegue(withIdentifier: "showSearch", sender: action)
         }))
-        //alert.addAction(UIAlertAction.init(title: "Ok", style: .cancel, handler: ))
+        
         
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
@@ -154,7 +168,7 @@ extension WeatherViewController: WeatherManagerDelegate {
         let urlString = "https://www.metaweather.com/static/img/weather/png/\(pngImage)"
         currentIconImageView.sd_setImage(with: URL(string: urlString))
         guard let currentWeather = weatherManager.weatherAtIndex(0)?.the_temp else{return}
-        currentTemperatureLabel.text = "\(String(format: "%0.2f", currentWeather.toFahrenheit()))°"
+        currentTemperatureLabel.text = isFahrenheit ? "\(String(format: "%0.2f", currentWeather.toFahrenheit()))°" : "\(String(format: "%0.2f", currentWeather))°"
         self.tableView.reloadData()
         
     }
@@ -172,8 +186,10 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         
         if let cityWeather = weatherManager.weatherAtIndex(indexPath.row) {
             //(1°C × 9/5) + 32
-            cell.maxTemperatureLabel.text = "Max: \(String(format: "%0.2f", cityWeather.max_temp.toFahrenheit()))°"
-            cell.minTemperatureLabel.text = "Min: \(String(format: "%0.2f", cityWeather.min_temp.toFahrenheit()))°"
+            cell.maxTemperatureLabel.text = isFahrenheit ? "Max: \(String(format: "%0.2f", cityWeather.max_temp.toFahrenheit()))°" : "Max: \(String(format: "%0.2f", cityWeather.max_temp))°"
+            
+            cell.minTemperatureLabel.text = isFahrenheit ? "Min: \(String(format: "%0.2f", cityWeather.min_temp.toFahrenheit()))°" : "Min: \(String(format: "%0.2f", cityWeather.min_temp))°"
+            
             cell.humidityLabel.text = "Humidity: \(String(cityWeather.humidity))"
             cell.percentChanceLabel.text = "\(String(cityWeather.predictability))%"
             cell.windLabel.text = "Wind: \(String(format: "%0.2f", cityWeather.wind_speed)) \(cityWeather.wind_direction_compass)"

@@ -24,7 +24,7 @@ class WeatherNetworkAdapter {
         var urlComponents = URLComponents(string: urlString)
         
         urlComponents?.path = "/api/location/\(woeid)"
-        print(urlComponents?.url!)
+        //print(urlComponents?.url!)
         
         
         guard let url = urlComponents?.url else { fatalError("URL is wrong")}
@@ -40,7 +40,7 @@ class WeatherNetworkAdapter {
             
             
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                print("error in the response")
+                print("error in the response weather")
                 return
             }
             

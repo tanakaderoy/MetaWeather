@@ -41,6 +41,16 @@
                                             <constraint firstAttribute="height" constant="240" id="ukq-dg-ATQ"/>
                                         </constraints>
                                     </imageView>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lck-h4-8jo">
+                                        <rect key="frame" x="291" y="159" width="61" height="29"/>
+                                        <segments>
+                                            <segment title="°F"/>
+                                            <segment title="°C"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="toggleTempTouched:" destination="BYZ-38-t0r" eventType="valueChanged" id="heM-6S-ca1"/>
+                                        </connections>
+                                    </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -48,12 +58,16 @@
                                     <constraint firstItem="SXw-hS-Mk9" firstAttribute="top" secondItem="IqP-cY-egg" secondAttribute="topMargin" constant="28" id="6ny-ik-jL4"/>
                                     <constraint firstItem="UIn-H4-1Ja" firstAttribute="top" secondItem="SXw-hS-Mk9" secondAttribute="bottom" constant="30" id="8R8-9d-0Dd"/>
                                     <constraint firstAttribute="bottom" secondItem="1Ve-Dm-KYW" secondAttribute="bottom" constant="50" id="ATE-W8-os3"/>
+                                    <constraint firstItem="lck-h4-8jo" firstAttribute="centerX" secondItem="UIn-H4-1Ja" secondAttribute="centerX" id="Ieb-dd-9lU"/>
+                                    <constraint firstItem="lck-h4-8jo" firstAttribute="leading" secondItem="1Ve-Dm-KYW" secondAttribute="trailing" constant="11" id="IhH-Nz-HGo"/>
+                                    <constraint firstItem="lck-h4-8jo" firstAttribute="top" secondItem="UIn-H4-1Ja" secondAttribute="bottom" constant="8" id="J9X-mz-UeQ"/>
                                     <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="UIn-H4-1Ja" secondAttribute="trailing" constant="59" id="KNm-L9-Xsu"/>
                                     <constraint firstItem="UIn-H4-1Ja" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IqP-cY-egg" secondAttribute="leading" constant="20" symbolic="YES" id="Mlr-4f-tNL"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="SXw-hS-Mk9" secondAttribute="trailing" constant="76" id="VMJ-WN-087"/>
                                     <constraint firstItem="1Ve-Dm-KYW" firstAttribute="leading" secondItem="IqP-cY-egg" secondAttribute="leading" constant="40" id="k5A-9V-eP8"/>
                                     <constraint firstItem="SXw-hS-Mk9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IqP-cY-egg" secondAttribute="leadingMargin" id="nUD-cJ-OIa"/>
                                     <constraint firstItem="1Ve-Dm-KYW" firstAttribute="top" secondItem="SXw-hS-Mk9" secondAttribute="bottom" constant="8" id="vTL-ew-VFk"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="lck-h4-8jo" secondAttribute="trailing" constant="63" id="vaP-AB-uUi"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GCa-6b-FY5">
@@ -201,6 +215,7 @@
                         <outlet property="currentIconImageView" destination="1Ve-Dm-KYW" id="GP9-J9-FDT"/>
                         <outlet property="currentTemperatureLabel" destination="UIn-H4-1Ja" id="CEe-wm-vC2"/>
                         <outlet property="tableView" destination="uHR-1g-LxO" id="WWY-UT-cEO"/>
+                        <outlet property="toggleFahrenheitOrCelsius" destination="lck-h4-8jo" id="g0M-Jq-wPx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
