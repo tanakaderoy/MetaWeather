@@ -32,23 +32,17 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //Setup delegate
         weatherManager.delegate = self
-        
-        
         locationManager.delegate = self
-        
-        
-        
-        
-        
         gpsLocationManager.delegate = self
+        //Start GPS
         gpsLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         gpsLocationManager.requestWhenInUseAuthorization()
         gpsLocationManager.startUpdatingLocation()
         
+        //Start Weather
         locationManager.reloadData()
-        
         weatherManager.reloadData(woeid: woeid)
         
         
@@ -64,7 +58,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         weatherUpdated()
     }
     
-    
+    //function to initialize weather
     func initilizeWeather(){
         if gotLocation {
             locationManager.latt = latitude
@@ -91,14 +85,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
-    
+    // MARK: - location gps methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[locations.count - 1]
         if location.horizontalAccuracy > 0{
             gotLocation = true
             gpsLocationManager.stopUpdatingLocation()
             gpsLocationManager.delegate = nil
-            print("longitude \(location.coordinate.longitude) latitude \(location.coordinate.latitude)")
+            //print("longitude \(location.coordinate.longitude) latitude \(location.coordinate.latitude)")
             latitude = "\(location.coordinate.latitude)"
             longitude = "\(location.coordinate.longitude)"
             initilizeWeather()
@@ -110,23 +104,19 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         currentCityLabel.text = "Location Unavailable"
     }
     
+    
+    
+     // MARK: - Navigation
+     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSearch" {
             let destinationVC = segue.destination as! SearchViewController
             destinationVC.delegate = self
         }
-    }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+ }
     
-}
+}//end class
+
 extension WeatherViewController: LocationManagerDelegate {
     
     func locationUpdateFailed() {
@@ -150,16 +140,11 @@ extension WeatherViewController: LocationManagerDelegate {
             weatherManager.reloadData(woeid: woeid)
             weatherUpdated()
         }
-        
-        
-        
-        
-        
-        
+
     }
     
     
-}
+}//end extension metaweather location delegate method
 
 
 extension WeatherViewController: WeatherManagerDelegate {
@@ -175,7 +160,7 @@ extension WeatherViewController: WeatherManagerDelegate {
     }
     
     
-}
+} // end weathermanager delegate extension
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -199,28 +184,21 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             let urlString = "https://www.metaweather.com/static/img/weather/png/64/\(pngImage)"
             cell.iconImageView.sd_setImage(with: URL(string: urlString), completed: nil)
             
-            
+            // TODO: - make a dateformatter function
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             let dateObj = dateFormatter.date(from: cityWeather.applicable_date)
             if let dateObj = dateObj{
-                
-                
-                
                 dateFormatter.dateFormat = "E, MMM d"
                 cell.dateLabel.text = dateFormatter.string(from: dateObj)
-                
             }
-            
-            
         }
         return cell
-        
     }
-    
-    
-}
+}//end tableview method extonsion
+
 extension WeatherViewController: SearchCityDelegate {
+    
     func userEnteredANewCityName(city: String) {
         print("called")
         locationManager.query = city
@@ -231,8 +209,7 @@ extension WeatherViewController: SearchCityDelegate {
         
     }
     
-    
-}
+}//end search delegate
 
 
 
