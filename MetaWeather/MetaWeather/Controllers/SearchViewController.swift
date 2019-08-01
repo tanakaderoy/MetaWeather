@@ -15,11 +15,37 @@ protocol SearchCityDelegate {
 }
 
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, LocationManagerDelegate {
+    func locationUpdated() {
+        print("yo what it do\(locationManager.location)")
+        print("\(searchTextField.text)")
+        if let location = locationManager.location.first{
+            
+            if let text = self.searchTextField.text{
+                
+                let newResult = SearchResult(context: self.context)
+                newResult.title = text
+                newResult.woeid = Int64(location.woeid)
+                newResult.timeStamp = getTimeStamp()
+                newResult.type = location.location_type
+                self.results.append(newResult)
+                self.saveSearchResults()
+            }
+        }
+        
+    }
+    
+    func locationUpdateFailed() {
+        
+    }
+    
     
     var delegate: SearchCityDelegate?
     
+    let locationManager = LocationManager()
+    
     @IBOutlet weak var searchTextField: UITextField!
+    
     var results = [SearchResult]()
     @IBOutlet weak var tableView: UITableView!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -28,9 +54,12 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         
+        
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        locationManager.delegate = self
+        locationManager.reloadData()
         loadSearchResults()
     }
     
@@ -44,16 +73,28 @@ class SearchViewController: UIViewController {
     @IBAction func goButtonPressed(_ sender: UIButton) {
         let text = searchTextField.text
         if text != "" {
-            let newResult = SearchResult(context: self.context)
-            newResult.title = text
-            newResult.woeid = 21233
-            self.results.append(newResult)
-            self.saveSearchResults()
+            locationManager.query = text
+            locationManager.reloadData()
+            locationManager.getWoeid()
+            
             delegate?.userEnteredANewCityName(city: text!)
             self.navigationController?.popViewController(animated: true)
         }else{
             searchTextField.endEditing(true)
         }
+    }
+    
+    func getTimeStamp() -> String {
+        // get the current date and time
+        let currentDateTime = Date()
+        
+        // initialize the date formatter and set the style
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .short
+        
+        // get the date time String from the date object
+        return formatter.string(from: currentDateTime)
     }
     
     
@@ -96,10 +137,15 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath)
-        cell.textLabel?.text = results[indexPath.row].title
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath) as! SearchResultTableViewCell
+        let city = results[indexPath.row]
+        cell.cityLabel.text = "Name: \(city.title!)"
+        cell.typeLabel.text = "Location Type: \(city.type!)"
+        cell.woeidLabel.text = "WOEID: \(city.woeid)"
+        cell.timeStampLabel.text = "Time: \(city.timeStamp!)"
         return cell
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let city = results[indexPath.row].title else { return  }

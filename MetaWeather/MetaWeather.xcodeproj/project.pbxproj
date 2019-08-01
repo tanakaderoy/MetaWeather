@@ -24,6 +24,7 @@
 		BA38344422F2409A00E98BE8 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38344322F2409A00E98BE8 /* Util.swift */; };
 		BA38344722F32E7300E98BE8 /* SearchResultModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BA38344522F32E7200E98BE8 /* SearchResultModel.xcdatamodeld */; };
 		BA38344B22F3302C00E98BE8 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38344A22F3302C00E98BE8 /* SearchViewController.swift */; };
+		BA38344D22F3546200E98BE8 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA38344C22F3546200E98BE8 /* SearchResultTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		BA38344322F2409A00E98BE8 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		BA38344622F32E7300E98BE8 /* SearchResultModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchResultModel.xcdatamodel; sourceTree = "<group>"; };
 		BA38344A22F3302C00E98BE8 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		BA38344C22F3546200E98BE8 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		CD4E3A4DB473737504E9BAFC /* Pods-MetaWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaWeather.release.xcconfig"; path = "Pods/Target Support Files/Pods-MetaWeather/Pods-MetaWeather.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				BA38342B22F20D9000E98BE8 /* WeatherTableViewCell.swift */,
+				BA38344C22F3546200E98BE8 /* SearchResultTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA38344D22F3546200E98BE8 /* SearchResultTableViewCell.swift in Sources */,
 				BA38344422F2409A00E98BE8 /* Util.swift in Sources */,
 				BA38343222F2124200E98BE8 /* WeatherViewController.swift in Sources */,
 				BA38342C22F20D9000E98BE8 /* WeatherTableViewCell.swift in Sources */,

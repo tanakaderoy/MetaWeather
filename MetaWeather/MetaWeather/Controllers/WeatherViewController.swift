@@ -225,6 +225,7 @@ extension WeatherViewController: SearchCityDelegate {
         print("called")
         locationManager.query = city
         locationManager.reloadData()
+        locationManager.getWoeid()
         print(city)
         print(locationManager.location.first?.title)
         

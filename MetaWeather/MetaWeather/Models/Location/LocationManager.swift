@@ -36,6 +36,11 @@ class LocationManager {
             locationNetworkAdapter.fetchWeatherWithLattLong(latt: latt, long: long)
         }
     }
+    func getWoeid(){
+        if let loc = location.first{
+            print(loc.woeid)
+        }
+    }
     
 
 }
