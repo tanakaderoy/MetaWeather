@@ -12,6 +12,7 @@ import SDWebImage
 
 
 class WeatherViewController: UIViewController, CLLocationManagerDelegate {
+    @IBOutlet weak var currentIconImageView: UIImageView!
     @IBOutlet weak var currentCityLabel: UILabel!
     @IBOutlet weak var currentTemperatureLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -50,6 +51,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func refreshButtonTouched(_ sender: UIBarButtonItem) {
+        gpsLocationManager.requestLocation()
+        locationManager.fetchDataWithLattLong()
+        weatherManager.reloadData(woeid: woeid)
+    }
+    
+    
     func initilizeWeather(){
         if gotLocation {
             locationManager.latt = latitude
@@ -118,9 +127,12 @@ extension WeatherViewController: LocationManagerDelegate {
 
 extension WeatherViewController: WeatherManagerDelegate {
     func weatherUpdated() {
-        
+        guard let iconImage = weatherManager.weatherAtIndex(0)?.weather_state_abbr else {return}
+        let pngImage = "\(iconImage).png"
+        let urlString = "https://www.metaweather.com/static/img/weather/png/\(pngImage)"
+        currentIconImageView.sd_setImage(with: URL(string: urlString))
         guard let currentWeather = weatherManager.weatherAtIndex(0)?.the_temp else{return}
-        currentTemperatureLabel.text = "\(String(format: "%0.2f", currentWeather))°"
+        currentTemperatureLabel.text = "\(String(format: "%0.2f", currentWeather.toFahrenheit()))°"
        self.tableView.reloadData()
         
     }
@@ -137,8 +149,9 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath) as! WeatherTableViewCell
         
         if let cityWeather = weatherManager.weatherAtIndex(indexPath.row) {
-            cell.maxTemperatureLabel.text = "Max: \(String(format: "%0.2f", cityWeather.max_temp))°"
-            cell.minTemperatureLabel.text = "Min: \(String(format: "%0.2f", cityWeather.min_temp))°"
+            //(1°C × 9/5) + 32
+            cell.maxTemperatureLabel.text = "Max: \(String(format: "%0.2f", cityWeather.max_temp.toFahrenheit()))°"
+            cell.minTemperatureLabel.text = "Min: \(String(format: "%0.2f", cityWeather.min_temp.toFahrenheit()))°"
             cell.humidityLabel.text = "Humidity: \(String(cityWeather.humidity))"
             cell.percentChanceLabel.text = "\(String(cityWeather.predictability))%"
             cell.windLabel.text = "Wind: \(String(format: "%0.2f", cityWeather.wind_speed)) \(cityWeather.wind_direction_compass)"
@@ -147,11 +160,31 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             let urlString = "https://www.metaweather.com/static/img/weather/png/64/\(pngImage)"
             cell.iconImageView.sd_setImage(with: URL(string: urlString), completed: nil)
             
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateObj = dateFormatter.date(from: cityWeather.applicable_date)
+            if let dateObj = dateObj{
+                
+                
+                
+                dateFormatter.dateFormat = "E, MMM d"
+                cell.dateLabel.text = dateFormatter.string(from: dateObj)
+                
+            }
+            
+            
         }
             return cell
         
     }
     
+    
+}
+extension Double {
+    func toFahrenheit() -> Double {
+        return self * 9 / 5 + 32
+    }
     
 }
 
