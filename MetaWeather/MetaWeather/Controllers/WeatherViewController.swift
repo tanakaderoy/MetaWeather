@@ -25,7 +25,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     var latitude = ""
     var longitude = ""
     var woeid = 0
-  
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +45,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         gpsLocationManager.startUpdatingLocation()
         
         locationManager.reloadData()
-
+        
         weatherManager.reloadData(woeid: woeid)
         
         
@@ -53,9 +53,12 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func refreshButtonTouched(_ sender: UIBarButtonItem) {
+        gpsLocationManager.delegate = self
+        
         gpsLocationManager.requestLocation()
-        locationManager.fetchDataWithLattLong()
+        initilizeWeather()
         weatherManager.reloadData(woeid: woeid)
+        weatherUpdated()
     }
     
     
@@ -93,32 +96,51 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         currentCityLabel.text = "Location Unavailable"
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "showSearch" {
+            let destinationVC = segue.destination as! SearchViewController
+            destinationVC.delegate = self
+        }
     }
-    */
-
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 extension WeatherViewController: LocationManagerDelegate {
+    func locationUpdateFailed() {
+        let alert = UIAlertController.init(title: "Sorry...", message: "Your city isn't in our databases yet. Try the next largest city.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction.init(title: "Ok", style: .cancel, handler: { (action) in
+            self.performSegue(withIdentifier: "showSearch", sender: action)
+        }))
+        //alert.addAction(UIAlertAction.init(title: "Ok", style: .cancel, handler: ))
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
     func locationUpdated() {
-        
-        currentCityLabel.text = locationManager.location[0].title
-        self.woeid = locationManager.location[0].woeid
-        
-        weatherManager.reloadData(woeid: woeid)
-        weatherUpdated()
-        
-        
-        
+        if let currentLocation = locationManager.location.first{
+            currentCityLabel.text = currentLocation.title
+            self.woeid = currentLocation.woeid
+            
+            weatherManager.reloadData(woeid: woeid)
+            weatherUpdated()
+        }
         
         
-       
+        
+        
+        
+        
     }
     
     
@@ -133,7 +155,7 @@ extension WeatherViewController: WeatherManagerDelegate {
         currentIconImageView.sd_setImage(with: URL(string: urlString))
         guard let currentWeather = weatherManager.weatherAtIndex(0)?.the_temp else{return}
         currentTemperatureLabel.text = "\(String(format: "%0.2f", currentWeather.toFahrenheit()))°"
-       self.tableView.reloadData()
+        self.tableView.reloadData()
         
     }
     
@@ -175,12 +197,26 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             
             
         }
-            return cell
+        return cell
         
     }
     
     
 }
+extension WeatherViewController: SearchCityDelegate {
+    func userEnteredANewCityName(city: String) {
+        print("called")
+        locationManager.query = city
+        locationManager.reloadData()
+        print(city)
+        print(locationManager.location.first?.title)
+        
+    }
+    
+    
+}
+
+
 extension Double {
     func toFahrenheit() -> Double {
         return self * 9 / 5 + 32

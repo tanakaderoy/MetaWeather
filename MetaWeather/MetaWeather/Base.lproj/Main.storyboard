@@ -207,10 +207,10 @@
             </objects>
             <point key="canvasLocation" x="1042.0289855072465" y="137.94642857142856"/>
         </scene>
-        <!--View Controller-->
+        <!--Search View Controller-->
         <scene sceneID="riQ-C8-l8p">
             <objects>
-                <viewController id="yyy-45-qF3" sceneMemberID="viewController">
+                <viewController id="yyy-45-qF3" customClass="SearchViewController" customModule="MetaWeather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fcf-Lq-zaa">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -230,6 +230,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBU-KW-daw">
                                         <rect key="frame" x="376" y="0.0" width="30" height="30"/>
                                         <state key="normal" title="Go"/>
+                                        <connections>
+                                            <action selector="goButtonPressed:" destination="yyy-45-qF3" eventType="touchUpInside" id="nAU-O8-Lbo"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -265,6 +268,10 @@
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="yyy-45-qF3" id="khy-L6-4NM"/>
+                                            <outlet property="delegate" destination="yyy-45-qF3" id="CI4-UK-xmk"/>
+                                        </connections>
                                     </tableView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.77814322709999995" green="0.30290633439999998" blue="0.27840819950000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -292,6 +299,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="CsG-AX-tpM"/>
                     </view>
+                    <connections>
+                        <outlet property="searchTextField" destination="uqX-S7-jy1" id="1HM-i5-OQn"/>
+                        <outlet property="tableView" destination="PZe-qY-dwn" id="SQG-hL-3Gz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4JH-TA-4Zr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
