@@ -26,7 +26,8 @@ class LocationManager {
         locationNetworkAdapter.delegate = self
     }
     func reloadData() {
-        if let query = query{
+        if let query = query?.trim(){
+            
         locationNetworkAdapter.fetchWeatherWithQuery(query: query)
     }
     }

@@ -128,6 +128,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
 }
 extension WeatherViewController: LocationManagerDelegate {
+    
     func locationUpdateFailed() {
         let alert = UIAlertController.init(title: "Sorry...", message: "Your city isn't in our databases yet. Try the next largest city.", preferredStyle: .alert)
         alert.addAction(UIAlertAction.init(title: "Ok", style: .cancel, handler: { (action) in
@@ -233,11 +234,6 @@ extension WeatherViewController: SearchCityDelegate {
 }
 
 
-extension Double {
-    func toFahrenheit() -> Double {
-        return self * 9 / 5 + 32
-    }
-    
-}
+
 
 
