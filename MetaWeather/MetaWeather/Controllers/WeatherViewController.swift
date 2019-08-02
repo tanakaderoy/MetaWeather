@@ -106,14 +106,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     
     
-     // MARK: - Navigation
-     
+    // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSearch" {
             let destinationVC = segue.destination as! SearchViewController
             destinationVC.delegate = self
         }
- }
+    }
     
 }//end class
 
@@ -140,7 +140,7 @@ extension WeatherViewController: LocationManagerDelegate {
             weatherManager.reloadData(woeid: woeid)
             weatherUpdated()
         }
-
+        
     }
     
     

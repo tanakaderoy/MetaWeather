@@ -28,8 +28,8 @@ class LocationManager {
     func reloadData() {
         if let query = query?.trim(){
             
-        locationNetworkAdapter.fetchWeatherWithQuery(query: query)
-    }
+            locationNetworkAdapter.fetchWeatherWithQuery(query: query)
+        }
     }
     func fetchDataWithLattLong() {
         if let latt = latt, let long = long{
@@ -42,7 +42,7 @@ class LocationManager {
         }
     }
     
-
+    
 }
 
 extension LocationManager: LocationNetworkAdapterDelegate{

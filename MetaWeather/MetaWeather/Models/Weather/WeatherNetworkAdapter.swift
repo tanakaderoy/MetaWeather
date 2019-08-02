@@ -65,6 +65,6 @@ class WeatherNetworkAdapter {
         }
         
         task.resume()
-}
-
+    }
+    
 }

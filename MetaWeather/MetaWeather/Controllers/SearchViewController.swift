@@ -17,8 +17,8 @@ protocol SearchCityDelegate {
 
 class SearchViewController: UIViewController, LocationManagerDelegate {
     func locationUpdated() {
-//        print("yo what it do\(locationManager.location)")
-//        print("\(searchTextField.text)")
+        //        print("yo what it do\(locationManager.location)")
+        //        print("\(searchTextField.text)")
         if let location = locationManager.location.first{
             
             if let text = self.searchTextField.text{

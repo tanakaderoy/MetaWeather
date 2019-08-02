@@ -80,7 +80,7 @@ class LocationNetworkAdapter {
         
         guard let url = urlComponents?.url else { fatalError("URL is wrong")}
         
-         let session = URLSession.shared
+        let session = URLSession.shared
         
         let task = session.dataTask(with: url) { (data, response, error) in
             

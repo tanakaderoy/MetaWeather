@@ -24,7 +24,7 @@ class WeatherManager {
         weatherNetworkAdapter.delegate = self
     }
     func reloadData(woeid: Int) {
-    
+        
         weatherNetworkAdapter.fetchWeatherWithWoeid(woeid: woeid)
         
     }
@@ -44,7 +44,7 @@ class WeatherManager {
 
 extension WeatherManager: WeatherNetworkAdapterDelegate{
     func weatherUpdated() {
-       self.weather = weatherNetworkAdapter.weather
+        self.weather = weatherNetworkAdapter.weather
         
         if let woeid = self.woeid{
             weatherNetworkAdapter.woeid = woeid
