@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/weatherIconImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_wrapHeight="336"
+        tools:layout_conversion_wrapWidth="336"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/iconDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="29dp"
+        android:layout_toEndOf="@+id/dateTextView"
+        android:text="Rain"
+        app:layout_constraintStart_toEndOf="@+id/dateTextView"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="73" />
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="27dp"
+        android:text="Thurs, Aug 17 "
+        app:layout_constraintStart_toStartOf="@+id/weatherIconImageView"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="236" />
+
+    <TextView
+        android:id="@+id/maxTempTextVIew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:text="Max: 100°F"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minTempTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="184" />
+
+    <TextView
+        android:id="@+id/minTempTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="35dp"
+        android:text="Min: 78F°"
+        app:layout_constraintEnd_toStartOf="@+id/maxTempTextVIew"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="155" />
+
+    <TextView
+        android:id="@+id/humidityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="42dp"
+        android:text="Humidity: 73"
+        app:layout_constraintBottom_toBottomOf="@+id/weatherIconImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxTempTextVIew"
+        app:layout_constraintVertical_bias="0.107"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="208" />
+
+    <TextView
+        android:id="@+id/percentChanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:text="80%"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iconDescriptionTextView"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="69" />
+</androidx.constraintlayout.widget.ConstraintLayout>
