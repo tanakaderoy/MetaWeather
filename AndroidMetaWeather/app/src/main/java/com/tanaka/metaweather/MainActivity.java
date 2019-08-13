@@ -6,6 +6,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -48,9 +51,29 @@ public class MainActivity extends AppCompatActivity {
     TextView currentTemperatureTextView;
     ImageView currentWeatherIcon;
     LocationManager locationManager;
-   // LocationListener locationListener;
+    // LocationListener locationListener;
     android.location.Location currentLocation;
     String latLong = "";
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            System.out.println(query);
+
+            fetchData(query);
+
+            //use the query to search your data somehow
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         currentCityTextView = findViewById(R.id.currentCityTextView);
         currentTemperatureTextView = findViewById(R.id.currentTemperatureTextView);
         currentWeatherIcon = findViewById(R.id.currentWeatherIconImageView);
-        adapter = new WeatherAdapter(this,consolidatedWeatherArrayList);
+        adapter = new WeatherAdapter(this, consolidatedWeatherArrayList);
         forecastListView.setAdapter(adapter);
         setUpRetrofit();
 
@@ -94,23 +117,26 @@ public class MainActivity extends AppCompatActivity {
 //        };
 
 
+        if (!Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-        }else{
-            android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            fetchDataWithLatLong(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            } else {
+                android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (lastKnownLocation != null) {
+                    fetchDataWithLatLong(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                }
 
-                locationManager.requestSingleUpdate( LocationManager.GPS_PROVIDER, new MyLocationListenerGPS(), null );
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, new MyLocationListenerGPS(), null);
 
 
-
-
+            }
         }
-       // locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+            // locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
 
 
+            handleIntent(getIntent());
 
     }
 
@@ -119,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(android.location.Location location) {
             Log.i("location 122", location.toString());
-                currentLocation = location;
-                fetchDataWithLatLong(currentLocation.getLatitude(),currentLocation.getLongitude());
+            currentLocation = location;
+            fetchDataWithLatLong(currentLocation.getLatitude(), currentLocation.getLongitude());
         }
 
         @Override
@@ -140,12 +166,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
+        menuInflater.inflate(R.menu.menu_main, menu);
+
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.mi_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -154,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
-                fetchData();
+                fetchData("Columbus");
 
 
             default:
@@ -166,9 +201,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void fetchDataWithLatLong(Double latitude, Double longitude) {
         consolidatedWeatherArrayList.clear();
+        adapter.clear();
         currentCityTextView.setText("");
         currentTemperatureTextView.setText("");
         currentWeatherIcon.setVisibility(View.INVISIBLE);
@@ -184,21 +219,24 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                         Gson gson = new Gson();
+
                         Weather weather = gson.fromJson(response.body(), Weather.class);
-                        ConsolidatedWeather todaysWeather = weather.getConsolidatedWeather().get(0);
+                        if (weather != null) {
+                            ConsolidatedWeather todaysWeather = weather.getConsolidatedWeather().get(0);
 
 
-                        //(1°C × 9/5) + 32 = 33.8°F
-                        currentCityTextView.setText(location.getTitle());
-                        currentTemperatureTextView.setText(todaysWeather.getTheTemp().intValue() * 9/5 + 32+"°F");
-                        System.out.println("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png");
-                        Glide.with(getApplicationContext()).load("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png").into(currentWeatherIcon);
-                        currentWeatherIcon.setVisibility(View.VISIBLE);
-                        for (ConsolidatedWeather consolidatedWeather : weather.getConsolidatedWeather()) {
-                            System.out.println(consolidatedWeather.getWeatherStateName());
-                            consolidatedWeatherArrayList.add(consolidatedWeather);
+                            //(1°C × 9/5) + 32 = 33.8°F
+                            currentCityTextView.setText(location.getTitle());
+                            currentTemperatureTextView.setText(todaysWeather.getTheTemp().intValue() * 9 / 5 + 32 + "°F");
+                            System.out.println("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png");
+                            Glide.with(getApplicationContext()).load("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png").into(currentWeatherIcon);
+                            currentWeatherIcon.setVisibility(View.VISIBLE);
+                            for (ConsolidatedWeather consolidatedWeather : weather.getConsolidatedWeather()) {
+                                System.out.println(consolidatedWeather.getWeatherStateName());
+                                consolidatedWeatherArrayList.add(consolidatedWeather);
+                            }
+                            adapter.notifyDataSetChanged();
                         }
-                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -235,11 +273,11 @@ public class MainActivity extends AppCompatActivity {
             }
             android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             fetchDataWithLatLong(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new MyLocationListenerGPS());
+
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, new MyLocationListenerGPS(), null);
 
         }
     }
-
 
 
     private void setUpRetrofit() {
@@ -252,50 +290,47 @@ public class MainActivity extends AppCompatActivity {
         apiInterface = retrofit.create(ApiInterface.class);
     }
 
-    private void fetchData() {
-       consolidatedWeatherArrayList.clear();
+    private void fetchData(String city) {
+        consolidatedWeatherArrayList.clear();
+        adapter.clear();
         currentCityTextView.setText("");
         currentTemperatureTextView.setText("");
         currentWeatherIcon.setVisibility(View.INVISIBLE);
-        apiInterface.getLocation("Columbus").enqueue(new Callback<List<Location>>() {
+        apiInterface.getLocation(city).enqueue(new Callback<List<Location>>() {
             @Override
             public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
+
                 List<Location> locations = response.body();
 
-                for (Location location : locations) {
-                    System.out.println(location.getTitle());
+                final Location location = locations.get(0);
+                locationArrayList.add(location);
 
-                    locationArrayList.add(location);
-
-
-                }
-                for (final Location location : locationArrayList) {
-                    apiInterface.getWeather(location.getWoeid()).enqueue(new Callback<JsonElement>() {
-                        @Override
-                        public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                            Gson gson = new Gson();
-                            Weather weather = gson.fromJson(response.body(), Weather.class);
-                            ConsolidatedWeather todaysWeather = weather.getConsolidatedWeather().get(0);
+                apiInterface.getWeather(location.getWoeid()).enqueue(new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        Gson gson = new Gson();
+                        Weather weather = gson.fromJson(response.body(), Weather.class);
+                        ConsolidatedWeather todaysWeather = weather.getConsolidatedWeather().get(0);
 
 
-                            //(1°C × 9/5) + 32 = 33.8°F
-                            currentCityTextView.setText(location.getTitle());
-                            currentTemperatureTextView.setText(todaysWeather.getTheTemp().intValue() * 9/5 + 32+"°F");
-                            Glide.with(getApplicationContext()).load("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png").into(currentWeatherIcon);
-                            currentWeatherIcon.setVisibility(View.VISIBLE);
-                            for (ConsolidatedWeather consolidatedWeather : weather.getConsolidatedWeather()) {
-                                System.out.println(consolidatedWeather.getWeatherStateName());
-                                consolidatedWeatherArrayList.add(consolidatedWeather);
-                            }
-                            adapter.notifyDataSetChanged();
+                        //(1°C × 9/5) + 32 = 33.8°F
+                        currentCityTextView.setText(location.getTitle());
+                        currentTemperatureTextView.setText(todaysWeather.getTheTemp().intValue() * 9 / 5 + 32 + "°F");
+                        Glide.with(getApplicationContext()).load("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png").into(currentWeatherIcon);
+                        currentWeatherIcon.setVisibility(View.VISIBLE);
+                        for (ConsolidatedWeather consolidatedWeather : weather.getConsolidatedWeather()) {
+                            System.out.println(consolidatedWeather.getWeatherStateName());
+                            consolidatedWeatherArrayList.add(consolidatedWeather);
                         }
+                        adapter.notifyDataSetChanged();
+                    }
 
-                        @Override
-                        public void onFailure(Call<JsonElement> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
 
-                        }
-                    });
-                }
+                    }
+                });
+
 
             }
 
@@ -304,6 +339,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }
