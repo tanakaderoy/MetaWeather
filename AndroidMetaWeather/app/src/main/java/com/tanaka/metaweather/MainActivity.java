@@ -16,10 +16,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -43,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
     ListView forecastListView;
     TextView currentCityTextView;
     TextView currentTemperatureTextView;
+    ImageView currentWeatherIcon;
     LocationManager locationManager;
-    LocationListener locationListener;
+   // LocationListener locationListener;
     android.location.Location currentLocation;
     String latLong = "";
 
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         forecastListView = findViewById(R.id.forecastListView);
         currentCityTextView = findViewById(R.id.currentCityTextView);
         currentTemperatureTextView = findViewById(R.id.currentTemperatureTextView);
+        currentWeatherIcon = findViewById(R.id.currentWeatherIconImageView);
         adapter = new WeatherAdapter(this,consolidatedWeatherArrayList);
         forecastListView.setAdapter(adapter);
         setUpRetrofit();
@@ -63,43 +68,75 @@ public class MainActivity extends AppCompatActivity {
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-                Log.i("location", location.toString());
-                currentLocation = location;
-                fetchDataWithLatLong(currentLocation.getLatitude(),currentLocation.getLongitude());
+//        locationListener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(android.location.Location location) {
+//                Log.i("location 122", location.toString());
+//                currentLocation = location;
+//                fetchDataWithLatLong(currentLocation.getLatitude(),currentLocation.getLongitude());
+//
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String s, int i, Bundle bundle) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String s) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String s) {
+//
+//            }
+//        };
 
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
 
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-        } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+        }else{
             android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             fetchDataWithLatLong(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+
+                locationManager.requestSingleUpdate( LocationManager.GPS_PROVIDER, new MyLocationListenerGPS(), null );
+
+
+
+
+        }
+       // locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+
+
+
+    }
+
+    public class MyLocationListenerGPS implements LocationListener {
+
+        @Override
+        public void onLocationChanged(android.location.Location location) {
+            Log.i("location 122", location.toString());
+                currentLocation = location;
+                fetchDataWithLatLong(currentLocation.getLatitude(),currentLocation.getLongitude());
         }
 
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
 
+        }
 
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
     }
 
 
@@ -132,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchDataWithLatLong(Double latitude, Double longitude) {
         consolidatedWeatherArrayList.clear();
+        currentCityTextView.setText("");
+        currentTemperatureTextView.setText("");
+        currentWeatherIcon.setVisibility(View.INVISIBLE);
         latLong = latitude + "," + longitude;
         apiInterface.getLocationWithLatLong(latLong).enqueue(new Callback<List<Location>>() {
             @Override
@@ -151,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
                         //(1°C × 9/5) + 32 = 33.8°F
                         currentCityTextView.setText(location.getTitle());
                         currentTemperatureTextView.setText(todaysWeather.getTheTemp().intValue() * 9/5 + 32+"°F");
+                        System.out.println("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png");
+                        Glide.with(getApplicationContext()).load("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png").into(currentWeatherIcon);
+                        currentWeatherIcon.setVisibility(View.VISIBLE);
                         for (ConsolidatedWeather consolidatedWeather : weather.getConsolidatedWeather()) {
                             System.out.println(consolidatedWeather.getWeatherStateName());
                             consolidatedWeatherArrayList.add(consolidatedWeather);
@@ -181,13 +224,22 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                return;
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+            android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            fetchDataWithLatLong(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new MyLocationListenerGPS());
 
         }
     }
+
 
 
     private void setUpRetrofit() {
@@ -201,7 +253,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchData() {
-        consolidatedWeatherArrayList.clear();
+       consolidatedWeatherArrayList.clear();
+        currentCityTextView.setText("");
+        currentTemperatureTextView.setText("");
+        currentWeatherIcon.setVisibility(View.INVISIBLE);
         apiInterface.getLocation("Columbus").enqueue(new Callback<List<Location>>() {
             @Override
             public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
@@ -226,6 +281,8 @@ public class MainActivity extends AppCompatActivity {
                             //(1°C × 9/5) + 32 = 33.8°F
                             currentCityTextView.setText(location.getTitle());
                             currentTemperatureTextView.setText(todaysWeather.getTheTemp().intValue() * 9/5 + 32+"°F");
+                            Glide.with(getApplicationContext()).load("https://www.metaweather.com/static/img/weather/png/" + todaysWeather.getWeatherStateAbbr() + ".png").into(currentWeatherIcon);
+                            currentWeatherIcon.setVisibility(View.VISIBLE);
                             for (ConsolidatedWeather consolidatedWeather : weather.getConsolidatedWeather()) {
                                 System.out.println(consolidatedWeather.getWeatherStateName());
                                 consolidatedWeatherArrayList.add(consolidatedWeather);

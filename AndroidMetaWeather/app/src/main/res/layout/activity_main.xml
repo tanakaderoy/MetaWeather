@@ -40,4 +40,17 @@
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/currentWeatherIconImageView"
+        android:layout_width="167dp"
+        android:layout_height="167dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/forecastListView"
+        app:layout_constraintEnd_toStartOf="@+id/currentTemperatureTextView"
+        app:layout_constraintHorizontal_bias="0.234"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentCityTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

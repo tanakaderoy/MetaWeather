@@ -65,7 +65,6 @@ public class WeatherAdapter extends ArrayAdapter<ConsolidatedWeather> {
         SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 
 
-
         try {
             Date unFormatteddate = format2.parse(weather.getApplicableDate());
 
@@ -76,11 +75,11 @@ public class WeatherAdapter extends ArrayAdapter<ConsolidatedWeather> {
 
 
         humidityTextView.setText(weather.getHumidity().toString());
-String maxTempInF = Integer.toString(weather.getMaxTemp().intValue() * 9 / 5 + 32);
+        String maxTempInF = Integer.toString(weather.getMaxTemp().intValue() * 9 / 5 + 32);
         String minTempInF = Integer.toString(weather.getMinTemp().intValue() * 9 / 5 + 32);
 
-        maxTemp.setText("Max: "+ maxTempInF + "°F");
-        minTemp.setText("Min: "+ minTempInF+"°F");
+        maxTemp.setText("Max: " + maxTempInF + "°F");
+        minTemp.setText("Min: " + minTempInF + "°F");
         percentChance.setText(weather.getPredictability() + "%");
         return listItem;
     }
