@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -49,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     Retrofit retrofit;
     ArrayList<Location> locationArrayList = new ArrayList<>();
     ArrayList<ConsolidatedWeather> consolidatedWeatherArrayList = new ArrayList<>();
+    ArrayList<WeatherHistory> weatherHistoryArrayList = new ArrayList<>();
     ListView forecastListView;
     TextView currentCityTextView;
     TextView currentTemperatureTextView;
@@ -143,14 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             handleIntent(getIntent());
-        findViewById(R.id.constraintLayout).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                return true;
-            }
-        });
+
 
     }
 
@@ -202,8 +193,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.search:
-                fetchData("Columbus");
+            case R.id.searchHistory:
+                //fetchData("Columbus");
+                Intent intent = new Intent(this, SearchHistoryActivity.class);
+                intent.putExtra("weatherHistoryArrayList", weatherHistoryArrayList);
+                startActivity(intent);
+                for (WeatherHistory history : weatherHistoryArrayList) {
+                    System.out.println(history.getTitle());
+                }
 
 
             default:
@@ -318,6 +315,9 @@ public class MainActivity extends AppCompatActivity {
 
                 final Location location = locations.get(0);
                 locationArrayList.add(location);
+                WeatherHistory history = new WeatherHistory(location.getTitle(), location.getWoeid(), location.getLocationType());
+                weatherHistoryArrayList.add(history);
+
 
                 apiInterface.getWeather(location.getWoeid()).enqueue(new Callback<JsonElement>() {
                     @Override

@@ -33,8 +33,8 @@
 
     <ListView
         android:id="@+id/forecastListView"
-        android:layout_width="409dp"
-        android:layout_height="387dp"
+        android:layout_width="419dp"
+        android:layout_height="508dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
