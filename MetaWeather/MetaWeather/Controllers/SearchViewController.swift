@@ -15,7 +15,7 @@ protocol SearchCityDelegate {
 }
 
 
-class SearchViewController: UIViewController, LocationManagerDelegate {
+class SearchViewController: UIViewController, LocationManagerDelegate,UITextFieldDelegate {
     func locationUpdated() {
         //        print("yo what it do\(locationManager.location)")
         //        print("\(searchTextField.text)")
@@ -52,6 +52,7 @@ class SearchViewController: UIViewController, LocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.searchTextField.delegate = self
         
         
         
@@ -62,6 +63,15 @@ class SearchViewController: UIViewController, LocationManagerDelegate {
         locationManager.reloadData()
         loadSearchResults()
     }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == searchTextField {
+            textField.resignFirstResponder()
+            goButtonPressed(self)
+            return false
+        }
+        return true
+    }
     
     func loadSearchResults() {
         //specify data type
@@ -70,7 +80,7 @@ class SearchViewController: UIViewController, LocationManagerDelegate {
         fetchRequest(request: request)
     }
     
-    @IBAction func goButtonPressed(_ sender: UIButton) {
+    @IBAction func goButtonPressed(_ sender: Any) {
         let text = searchTextField.text
         if text != "" {
             locationManager.query = text

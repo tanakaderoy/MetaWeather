@@ -132,14 +132,6 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="145.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="19s-Jl-fSq">
-                                                            <rect key="frame" x="8" y="11" width="64" height="65"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="64" id="PLE-nx-sej"/>
-                                                                <constraint firstAttribute="height" constant="65" id="XnU-N0-y0W"/>
-                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="n1O-OE-7Wq"/>
-                                                            </constraints>
-                                                        </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T89-iZ-tP5">
                                                             <rect key="frame" x="207.5" y="0.0" width="206.5" height="140"/>
                                                             <subviews>
@@ -169,7 +161,7 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="47" translatesAutoresizingMaskIntoConstraints="NO" id="6RX-88-t4d" userLabel="tempStackView">
                                                                     <rect key="frame" x="35" y="8" width="137" height="20.5"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Max T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRl-up-P6N">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Max T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRl-up-P6N">
                                                                             <rect key="frame" x="0.0" y="0.0" width="47" height="20.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <nil key="textColor"/>
@@ -196,25 +188,45 @@
                                                                 <constraint firstItem="XwJ-Iz-vlL" firstAttribute="top" secondItem="6RX-88-t4d" secondAttribute="bottom" constant="6.6699999999999999" id="zjh-dI-WDZ"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnF-e8-vlc">
-                                                            <rect key="frame" x="27" y="84" width="36" height="20"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2zh-Ua-PQs">
+                                                            <rect key="frame" x="20" y="0.0" width="104" height="144"/>
+                                                            <subviews>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="19s-Jl-fSq">
+                                                                    <rect key="frame" x="20" y="20" width="64" height="65"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="64" id="PLE-nx-sej"/>
+                                                                        <constraint firstAttribute="height" constant="65" id="XnU-N0-y0W"/>
+                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="n1O-OE-7Wq"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnF-e8-vlc">
+                                                                    <rect key="frame" x="20" y="93" width="63" height="20.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="nnF-e8-vlc" firstAttribute="top" secondItem="19s-Jl-fSq" secondAttribute="bottom" constant="8" symbolic="YES" id="361-0J-xBZ"/>
+                                                                <constraint firstItem="nnF-e8-vlc" firstAttribute="leading" relation="lessThanOrEqual" secondItem="2zh-Ua-PQs" secondAttribute="leading" constant="20" symbolic="YES" id="7SC-M0-KFZ"/>
+                                                                <constraint firstItem="nnF-e8-vlc" firstAttribute="top" secondItem="19s-Jl-fSq" secondAttribute="bottom" constant="8" id="GHc-tN-SDL"/>
+                                                                <constraint firstItem="19s-Jl-fSq" firstAttribute="top" secondItem="2zh-Ua-PQs" secondAttribute="top" constant="20" id="HC5-Fe-V5Y"/>
+                                                                <constraint firstAttribute="trailing" secondItem="nnF-e8-vlc" secondAttribute="trailing" constant="21" id="qFt-rL-Nc1"/>
+                                                                <constraint firstItem="19s-Jl-fSq" firstAttribute="centerX" secondItem="2zh-Ua-PQs" secondAttribute="centerX" id="xKN-nG-AIT"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="T89-iZ-tP5" firstAttribute="leading" relation="lessThanOrEqual" secondItem="2zh-Ua-PQs" secondAttribute="trailing" constant="84" id="2WM-ec-u6h"/>
                                                         <constraint firstAttribute="bottomMargin" secondItem="T89-iZ-tP5" secondAttribute="bottom" constant="-5" id="BSg-Qm-dz6"/>
-                                                        <constraint firstAttribute="bottomMargin" secondItem="nnF-e8-vlc" secondAttribute="bottom" constant="31" id="G3h-v9-TK9"/>
-                                                        <constraint firstItem="nnF-e8-vlc" firstAttribute="top" secondItem="19s-Jl-fSq" secondAttribute="bottom" constant="8" symbolic="YES" id="I2i-FY-kUI"/>
-                                                        <constraint firstItem="nnF-e8-vlc" firstAttribute="top" secondItem="19s-Jl-fSq" secondAttribute="bottom" constant="8" id="JSY-pF-NGw"/>
-                                                        <constraint firstItem="19s-Jl-fSq" firstAttribute="leading" secondItem="7u0-Mo-zvX" secondAttribute="leadingMargin" constant="-12" id="O74-9C-Oj4"/>
-                                                        <constraint firstItem="nnF-e8-vlc" firstAttribute="leading" secondItem="7u0-Mo-zvX" secondAttribute="leadingMargin" constant="7" id="Qyz-ai-21S"/>
-                                                        <constraint firstItem="T89-iZ-tP5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nnF-e8-vlc" secondAttribute="trailing" constant="8" symbolic="YES" id="Wm3-bJ-jtC"/>
-                                                        <constraint firstItem="19s-Jl-fSq" firstAttribute="top" secondItem="7u0-Mo-zvX" secondAttribute="topMargin" id="r7N-CV-7g8"/>
+                                                        <constraint firstItem="2zh-Ua-PQs" firstAttribute="top" secondItem="7u0-Mo-zvX" secondAttribute="topMargin" constant="-11" id="DUh-ZC-fzu"/>
+                                                        <constraint firstAttribute="trailing" secondItem="2zh-Ua-PQs" secondAttribute="trailing" constant="290" id="Je7-46-nGE"/>
+                                                        <constraint firstItem="2zh-Ua-PQs" firstAttribute="leading" secondItem="7u0-Mo-zvX" secondAttribute="leadingMargin" id="Tbh-oU-WhX"/>
                                                         <constraint firstItem="T89-iZ-tP5" firstAttribute="top" secondItem="7u0-Mo-zvX" secondAttribute="top" id="raC-J2-g1Z"/>
                                                         <constraint firstAttribute="trailing" secondItem="T89-iZ-tP5" secondAttribute="trailing" id="wdP-4h-KNs"/>
                                                         <constraint firstItem="T89-iZ-tP5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7u0-Mo-zvX" secondAttribute="leading" id="yeI-bn-Qvk"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="2zh-Ua-PQs" secondAttribute="bottom" constant="-9" id="zrj-KA-0vh"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
@@ -277,7 +289,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1146.4000000000001" y="147.78325123152709"/>
+            <point key="canvasLocation" x="1146.376811594203" y="147.32142857142856"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1fp-Dx-1LT">

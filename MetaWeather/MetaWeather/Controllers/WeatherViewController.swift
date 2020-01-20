@@ -151,7 +151,7 @@ extension WeatherViewController: WeatherManagerDelegate {
     func weatherUpdated() {
         guard let iconImage = weatherManager.weatherAtIndex(0)?.weather_state_abbr else {return}
         let pngImage = "\(iconImage).png"
-        let urlString = "https://www.metaweather.com/static/img/weather/png/\(pngImage)"
+        let urlString = "\(IMAGE_BASE_URL)\(pngImage)"
         currentIconImageView.sd_setImage(with: URL(string: urlString))
         guard let currentWeather = weatherManager.weatherAtIndex(0)?.the_temp else{return}
         currentTemperatureLabel.text = isFahrenheit ? "\(String(format: "%0.2f", currentWeather.toFahrenheit()))°" : "\(String(format: "%0.2f", currentWeather))°"
@@ -166,22 +166,28 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherManager.weather?.count ?? 0
     }
+
+    func returnTemperetureText(temp: Double)-> String{
+
+        return isFahrenheit ? "Max: \(String(format: "%0.2f", temp.toFahrenheit()))°" : "Max: \(String(format: "%0.2f", temp))°"
+
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath) as! WeatherTableViewCell
         
         if let cityWeather = weatherManager.weatherAtIndex(indexPath.row) {
             //(1°C × 9/5) + 32
-            cell.maxTemperatureLabel.text = isFahrenheit ? "Max: \(String(format: "%0.2f", cityWeather.max_temp.toFahrenheit()))°" : "Max: \(String(format: "%0.2f", cityWeather.max_temp))°"
+            cell.maxTemperatureLabel.text = returnTemperetureText(temp: cityWeather.max_temp)
             
-            cell.minTemperatureLabel.text = isFahrenheit ? "Min: \(String(format: "%0.2f", cityWeather.min_temp.toFahrenheit()))°" : "Min: \(String(format: "%0.2f", cityWeather.min_temp))°"
+            cell.minTemperatureLabel.text = returnTemperetureText(temp: cityWeather.min_temp)
             
             cell.humidityLabel.text = "Humidity: \(String(cityWeather.humidity))"
             cell.percentChanceLabel.text = "\(String(cityWeather.predictability))%"
             cell.windLabel.text = "Wind: \(String(format: "%0.2f", cityWeather.wind_speed)) \(cityWeather.wind_direction_compass)"
             
             let pngImage = "\(cityWeather.weather_state_abbr).png"
-            let urlString = "https://www.metaweather.com/static/img/weather/png/64/\(pngImage)"
+            let urlString = "\(IMAGE_BASE_URL)64/\(pngImage)"
             cell.iconImageView.sd_setImage(with: URL(string: urlString), completed: nil)
             
             // TODO: - make a dateformatter function
@@ -195,7 +201,7 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-}//end tableview method extonsion
+}//end tableview method extension
 
 extension WeatherViewController: SearchCityDelegate {
     

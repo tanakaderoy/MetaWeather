@@ -7,6 +7,8 @@
 //
 
 import Foundation
+let IMAGE_BASE_URL = "https://www.metaweather.com/static/img/weather/png/"
+
 //if an index is valid for the array
 extension Array {
     func isValidIndex(_ index: Int) -> Bool {
